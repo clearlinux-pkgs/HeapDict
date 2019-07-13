@@ -4,7 +4,7 @@
 #
 Name     : HeapDict
 Version  : 1.0.0
-Release  : 2
+Release  : 3
 URL      : https://files.pythonhosted.org/packages/e2/ca/f5feba2f939c97629dbce52a17acc95a0d10256ef620334795379dda8ce6/HeapDict-1.0.0.tar.gz
 Source0  : https://files.pythonhosted.org/packages/e2/ca/f5feba2f939c97629dbce52a17acc95a0d10256ef620334795379dda8ce6/HeapDict-1.0.0.tar.gz
 Summary  : a heap with decrease-key and increase-key operations
