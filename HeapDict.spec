@@ -4,7 +4,7 @@
 #
 Name     : HeapDict
 Version  : 1.0.1
-Release  : 8
+Release  : 9
 URL      : https://files.pythonhosted.org/packages/5a/9b/d8963ae7e388270b695f3b556b6dc9adb70ae9618fba09aa1e7b1886652d/HeapDict-1.0.1.tar.gz
 Source0  : https://files.pythonhosted.org/packages/5a/9b/d8963ae7e388270b695f3b556b6dc9adb70ae9618fba09aa1e7b1886652d/HeapDict-1.0.1.tar.gz
 Summary  : a heap with decrease-key and increase-key operations
@@ -18,6 +18,33 @@ BuildRequires : buildreq-distutils3
 %description
 heapdict: a heap with decreased-key and increase-key operations
 ===============================================================
+
+heapdict implements the MutableMapping ABC, meaning it works pretty
+much like a regular Python dict.  It's designed to be used as a
+priority queue, where items are added and consumed as follows:
+
+::
+
+    hd = heapdict()
+    hd[obj1] = priority1
+    hd[obj2] = priority2
+    # ...
+    (obj, priority) = hd.popitem()
+
+Compared to an ordinary dict, a heapdict has the following differences:
+
+popitem():
+    Remove and return the (key, priority) pair with the lowest
+    priority, instead of a random object.
+
+peekitem():
+    Return the (key, priority) pair with the lowest priority, without
+    removing it.
+
+Unlike the Python standard library's heapq module, the heapdict
+supports efficiently changing the priority of an existing object
+(often called "decrease-key" in textbooks).  Altering the priority is
+important for many algorithms such as Dijkstra's Algorithm and A*.
 
 %package license
 Summary: license components for the HeapDict package.
@@ -41,6 +68,7 @@ python components for the HeapDict package.
 Summary: python3 components for the HeapDict package.
 Group: Default
 Requires: python3-core
+Provides: pypi(HeapDict)
 
 %description python3
 python3 components for the HeapDict package.
@@ -48,13 +76,14 @@ python3 components for the HeapDict package.
 
 %prep
 %setup -q -n HeapDict-1.0.1
+cd %{_builddir}/HeapDict-1.0.1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568213529
+export SOURCE_DATE_EPOCH=1582934596
 # -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
@@ -68,7 +97,7 @@ python3 setup.py build
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/HeapDict
-cp LICENSE %{buildroot}/usr/share/package-licenses/HeapDict/LICENSE
+cp %{_builddir}/HeapDict-1.0.1/LICENSE %{buildroot}/usr/share/package-licenses/HeapDict/31a389d465048a3fadc191a3c2ffc9f74a79c3b1
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
@@ -79,7 +108,7 @@ echo ----[ mark ]----
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/HeapDict/LICENSE
+/usr/share/package-licenses/HeapDict/31a389d465048a3fadc191a3c2ffc9f74a79c3b1
 
 %files python
 %defattr(-,root,root,-)
